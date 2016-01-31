@@ -1,0 +1,23 @@
+(define (add-interval x y)
+  (make-interval (+ (low x) (low y))
+                 (+ (up x) (up y))))
+
+(define (mul-interval x y)
+  (let ((p1 (* (low x) (low y)))
+        (p2 (* (low x) (up y)))
+        (p3 (* (up x) (low y)))
+        (p4 (* (up x) (up y))))
+    (make-interval (min p1 p2 p3 p4)
+                   (max p1 p2 p3 p4))))
+
+(define (div-interval x y)
+  (mul-interval x 
+                (make-interval (/ 1. (up y))
+                               (/ 1. (low y)))))
+(define (make-interval a b) (cons a b))
+(define (low a) (car a))
+(define (up a) (cdr a))
+
+(define (diff-interval x y)
+  (make-interval (- (low x) (up y))
+                 (- (up x) (low y))))

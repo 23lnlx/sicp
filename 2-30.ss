@@ -1,0 +1,15 @@
+(define (double x)
+  (* x x))
+
+(define (double-tree tree)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (double-tree sub-tree)
+             (double sub-tree)))
+       tree))
+(define (double1-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (double tree))
+        (else
+         (cons (double-tree (car tree))
+               (double-tree (cdr tree))))))

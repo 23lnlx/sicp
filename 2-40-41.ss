@@ -1,0 +1,84 @@
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+
+(define (accumulate op init sequence)
+  (if (null? sequence)
+      init
+      (op (car sequence)
+          (accumulate op init (cdr sequence)))))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      nil
+      (cons low (enumerate-interval (+ low 1) high))))
+
+(define (enumerate-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+;;;;;;;;;
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (prime-sum? pair)
+  (prime? (+ (car pair) (cadr pair))))
+
+(define (make-pair-sum pair)
+  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+
+(define (prime-sum-pairs n)
+  (map make-pair-sum 
+       (filter prime-sum?
+               (flatmap 
+                (lambda (i) 
+                  (map (lambda (j) (list i j))
+                       (enumerate-interval 1 (- i 1))))
+                (enumerate-interval 1 n)))))
+
+
+;;Div
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n test-divisor)
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))))
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (square a)
+  (* a a))
+
+(define (prime? n)
+  (= (smallest-divisor n) n))
+;;DIV
+;; Task
+
+(define (unique-pairs n)
+  (flatmap 
+   (lambda (i) 
+     (map (lambda (j) (list i j))
+          (enumerate-interval 1 (- i 1))))
+   (enumerate-interval 1 n)))
+
+(define (prime-sum-pairs-easy n)
+  (map make-pair-sum 
+       (filter prime-sum? (unique-pairs n))))
+
+(define (sum-pairs-s n s)
+  (map make-pair-sum 
+       (filter (lambda (pair) (= (sum pair) s)) (unique-pairs n))))
+
+(define (sum pair)
+   (+ (car pair) (cadr pair)))
+;;Test
+;(unique-pairs 6)
+;(prime-sum-pairs-easy 6)
+(sum-pairs-s 7 6)

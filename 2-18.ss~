@@ -1,0 +1,11 @@
+(define (last-pair l) 
+  (if (null? (cdr l))
+            (car l)
+            (last-pair (cdr l))))
+
+(define (reverse l) 
+  (define (returner l last-n)
+    (if (null? (cdr l)
+  (if (not (null? (cdr l))
+            (car l)
+           (last-pair (cdr l))))))

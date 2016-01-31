@@ -1,0 +1,22 @@
+(define (square n)
+  (* n n))
+
+(define (even? a)
+  (= (remainder a 2) 0))
+
+(define (expmod base exp m)
+  (cond ((= exp 1) 1)
+        ((even? exp)
+        (if (or (not (= base 1)) (not (= base (- n 1))))
+          (if (= (remainder (square (expmod base (/ exp 2) m))
+                    m) 1) 0)
+         (remainder (square (expmod base (/ exp 2) m))
+                    m)))
+        (else 
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+  
+(define (true-prime? n)
+  (cond ((= (expmod (random (- n 1)) n n) 0) 
+         true)
+        (else false)))

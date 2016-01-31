@@ -1,0 +1,23 @@
+(define (same-par f . l)
+  (if (even? f)
+      (filter-even l)
+      (filter-odd l)))
+(define (even? num)
+  (= (remainder num 2) 0))
+
+(define (filter-even l)
+  (if (null? l)
+      l
+      (let ((f-l (car l)))
+        (if (even? f-l)
+          (cons f-l (filter-even (cdr l)))
+          (filter-even (cdr l))
+          ))))
+(define (filter-odd l)
+  (if (null? l)
+      l
+      (let ((f-l (car l)))
+        (if (not (even? f-l))
+          (cons f-l (filter-odd (cdr l)))
+          (filter-odd (cdr l))
+          ))))
